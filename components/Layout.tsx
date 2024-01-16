@@ -4,7 +4,7 @@ import Nav from "./Nav";
 import {useState} from "react";
 import Logo from "./Logo";
 
-export default function Layout({children}) {
+export default function Layout({children}: {children: React.ReactNode}) {
   const [showNav,setShowNav] = useState(false);
   const { data: session } = useSession();
   if (!session) {

@@ -3,7 +3,7 @@ import {useRouter, usePathname} from "next/navigation";
 import {signOut} from "next-auth/react";
 import Logo from "./Logo";
 
-export default function Nav({show}) {
+export default function Nav({show}: {show: boolean}) {
   const inactiveLink = 'flex gap-1 p-1';
   const activeLink = inactiveLink+' bg-highlight text-black rounded-sm';
   const inactiveIcon = 'w-6 h-6';
