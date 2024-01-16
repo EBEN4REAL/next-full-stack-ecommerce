@@ -1,5 +1,5 @@
 import Link from "next/link";
-import {useRouter} from "next/router";
+import {useRouter, usePathname} from "next/navigation";
 import {signOut} from "next-auth/react";
 import Logo from "./Logo";
 
@@ -9,7 +9,8 @@ export default function Nav({show}) {
   const inactiveIcon = 'w-6 h-6';
   const activeIcon = inactiveIcon + ' text-primary';
   const router = useRouter();
-  const {pathname} = router;
+  // const {pathname} = router;
+  const pathname = usePathname()
   async function logout() {
     await router.push('/');
     await signOut();
