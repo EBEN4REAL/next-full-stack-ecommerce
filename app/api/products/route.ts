@@ -1,11 +1,12 @@
 import {Product} from "@/models/Product";
 import {mongooseConnect} from "@/lib/mongoose";
-import {isAdminRequest} from "@/pages/api/auth/[...nextauth]";
+import {isAdminRequest} from "@/app/api/auth/[...nextauth]/route";
+import { NextApiRequest, NextApiResponse } from "next";
 
-export default async function handle(req, res) {
+export default async function handle(req: NextApiRequest, res: NextApiResponse) {
   const {method} = req;
   await mongooseConnect();
-  // await isAdminRequest(req,res);
+  await isAdminRequest(req,res);
 
   if (method === 'GET') {
     if (req.query?.id) {
