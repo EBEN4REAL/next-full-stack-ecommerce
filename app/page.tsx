@@ -3,6 +3,7 @@ import Image from 'next/image'
 import '@/styles/globals.css';
 import {useSession} from "next-auth/react"
 import Layout from '../components/Layout';
+import Providers from "./providers"
 
 export default function Home() {
   const {data: session} = useSession();
