@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@auth/mongodb-adapter": "^2.0.13",
     "@types/mongoose": "^5.11.97",
     "next": "14.0.4",
     "react": "^18",
