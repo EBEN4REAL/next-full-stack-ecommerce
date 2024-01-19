@@ -1,12 +1,13 @@
 'use client';
-import { useSession, signIn, signOut } from "next-auth/react"
+import { useSession, signIn } from "next-auth/react"
 import Nav from "./Nav";
 import {useState} from "react";
 import Logo from "./Logo";
 
 export default function Layout({children}: {children: React.ReactNode}) {
-  const [showNav,setShowNav] = useState(false);
+  const [showNav, setShowNav] = useState(false);
   const { data: session } = useSession();
+
   if (!session) {
     return (
       <div className="bg-bgGray w-screen h-screen flex items-center">
