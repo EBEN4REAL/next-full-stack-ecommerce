@@ -6,8 +6,6 @@ const handler = NextAuth(authOptions);
 
 const adminEmails = ["igbinobaebenezer@gmail.com"]
 
-
-
 export async function isAdminRequest(req: NextApiRequest, res: NextApiResponse): Promise<void> {
     const session = await getServerSession(req, res, authOptions);
     

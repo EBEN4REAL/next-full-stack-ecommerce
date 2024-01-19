@@ -1,18 +1,8 @@
 import {useEffect, useState} from "react";
-import {useRouter} from "next/router";
+import {useRouter} from "next/navigation";
 import axios from "axios";
 import Spinner from "./Spinner";
 import {ReactSortable} from "react-sortablejs";
-
-// interface Props {
-//   _id: string;
-//   title: string;
-//   description: string;
-//   price: string;
-//   images: string;
-//   category: string;
-//   properties: string;
-// }
 
 export default function ProductForm({
   _id,

@@ -1,17 +1,15 @@
-import mongoose, { Document, Model, Schema, Types, models } from 'mongoose';
+import mongoose, { Document, Model, models, Schema } from 'mongoose';
 
-interface ICategory {
+interface CategoryDocument extends Document {
   name: string;
-  parent?: Types.ObjectId | null;
-  properties: object[];
+  parent?: mongoose.Types.ObjectId | string | null;
+  properties?: object[];
 }
 
-const CategorySchema = new Schema<ICategory>({
+const CategorySchema = new Schema<CategoryDocument>({
   name: { type: String, required: true },
-  parent: { type: Types.ObjectId, ref: 'Category' },
+  parent: { type: mongoose.Schema.Types.ObjectId, ref: 'Category' },
   properties: [{ type: Object }],
 });
 
-interface ICategoryModel extends Model<ICategory, {}> {}
-
-export const Category: ICategoryModel = (models?.Category as ICategoryModel) || mongoose.model<ICategory, ICategoryModel>('Category', CategorySchema);
+export const Category: Model<CategoryDocument> = models.Category || mongoose.model('Category', CategorySchema);

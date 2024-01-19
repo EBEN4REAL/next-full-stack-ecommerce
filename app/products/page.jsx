@@ -1,18 +1,21 @@
 "use client";
-import Layout from "../layout";
+
+import Layout from "../../components/Layout";
 import Link from "next/link";
 import {useEffect, useState} from "react";
 import axios from "axios";
 
 export default function Products() {
   const [products,setProducts] = useState([]);
-  // useEffect(() => {
-  //   axios.get('/api/products').then(response => {
-  //     setProducts(response.data);
-  //   });
-  // }, []);
+  useEffect(() => {
+    axios.get('/api/products').then(response => {
+      setProducts(response.data);
+    });
+  }, []);
+  
   return (
-    <>
+    <Layout>
+      <h1>Products</h1>
       <Link className="btn-primary" href={'/products/new'}>Add new product</Link>
       <table className="basic mt-2">
         <thead>
@@ -43,6 +46,6 @@ export default function Products() {
           ))}
         </tbody>
       </table>
-    </>
+    </Layout>
   );
 }
