@@ -5,7 +5,7 @@ import {getServerSession} from "next-auth";
 import {isAdminRequest} from "@/app/api/auth/[...nextauth]/route";
 
 
-export default async function handle(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const {method} = req;
   await mongooseConnect();
   await isAdminRequest(req,res);
