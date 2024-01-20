@@ -1,10 +1,7 @@
 import {Product} from "@/models/Product";
 import {mongooseConnect} from "@/lib/mongoose";
 import {isAdminRequest} from "@/app/api/auth/[...nextauth]/route";
-import { NextApiRequest, NextApiResponse } from "next";
 import { NextResponse } from "next/server";
-import { truncate } from "fs";
-
 
 
 export async function POST(req: Request) {
@@ -22,7 +19,7 @@ export async function GET(req: Request) {
   const {searchParams} = new URL(req.url);
   const _id = searchParams.get("id");
   if(_id) {
-    return NextResponse.json(await Product.findOne({_id}));
+    return NextResponse.json(await Product.findOne({_id}).populate('categories'));
   } 
   return NextResponse.json(await Product.find());
  }
