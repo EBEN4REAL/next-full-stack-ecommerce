@@ -18,9 +18,9 @@ export async function POST(req: Request) {
     return NextResponse.json(categoryDoc);
 }
 
-export async function GET(req: Request) {
+export async function GET(req: Request, res: Response) {
   await mongooseConnect();
-  // await isAdminRequest(req , res);
+  await isAdminRequest(req , res);
   const result = await Category.find().populate('parent')
   
   return NextResponse.json(result);
