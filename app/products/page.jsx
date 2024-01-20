@@ -20,7 +20,8 @@ export default function Products() {
       <table className="basic mt-2">
         <thead>
           <tr>
-            <td>Product name</td>
+            <td>Name</td>
+            <td>Description</td>
             <td></td>
           </tr>
         </thead>
@@ -28,6 +29,7 @@ export default function Products() {
           {products.map(product => (
             <tr key={product._id}>
               <td>{product.title}</td>
+              <td>{product.description}</td>
               <td>
                 <Link className="btn-default" href={'/products/edit/'+product._id}>
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">

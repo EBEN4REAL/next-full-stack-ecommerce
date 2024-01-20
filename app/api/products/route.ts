@@ -10,9 +10,9 @@ import { truncate } from "fs";
 export async function POST(req: Request) {
   await mongooseConnect();
   const res = await req.json();
-  const {title, description, price, images, properties } = res;
+  const {title, description, price, images, properties, category } = res;
   const productDoc = await Product.create({
-    title, description, price, images, properties,
+    title, description, price, images, properties, category
   })
   return NextResponse.json(productDoc);
 }
