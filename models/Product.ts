@@ -5,7 +5,7 @@ interface ProductDocument extends Document {
   description?: string;
   price?: string;
   images?: string[];
-  category?: Array<mongoose.Types.ObjectId>; // Adjust type as needed
+  category?: mongoose.Types.ObjectId | string; // Adjust type as needed
   properties?: Record<string, any>; // Adjust the type based on your requirements
 }
 

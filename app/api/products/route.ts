@@ -19,7 +19,7 @@ export async function GET(req: Request) {
   const {searchParams} = new URL(req.url);
   const _id = searchParams.get("id");
   if(_id) {
-    return NextResponse.json(await Product.findOne({_id}).populate('categories'));
+    return NextResponse.json(await Product.findOne({_id}));
   } 
   return NextResponse.json(await Product.find());
  }
@@ -33,12 +33,11 @@ export async function PUT(req: Request) {
 
 export async function DELETE(req: Request, route: { query: { id: string }}) {
   await mongooseConnect();
-  const res = await req.json()
   const {searchParams} = new URL(req.url);
   const _id = searchParams.get("id");
   if (_id) {
     await Product.deleteOne({_id});
-    res.json(true);
+    return NextResponse.json(true);
   }
 }
 
