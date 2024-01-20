@@ -10,46 +10,38 @@ import { truncate } from "fs";
 export async function POST(req: Request) {
   await mongooseConnect();
   const res = await req.json();
-  const {title,description,price,images,properties} = res;
+  const {title, description, price, images, properties } = res;
   const productDoc = await Product.create({
-    title, description, price, images,properties,
+    title, description, price, images, properties,
   })
   return NextResponse.json(productDoc);
 }
 
-// export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-//   const {method} = req;
-//   await mongooseConnect();
-  // await isAdminRequest(req,res);
+export async function GET(req: Request) {
+  await mongooseConnect();
+  const {searchParams} = new URL(req.url);
+  const _id = searchParams.get("id");
+  if(_id) {
+    return NextResponse.json(await Product.findOne({_id}));
+  } 
+  return NextResponse.json(await Product.find());
+ }
 
-  // if (method === 'GET') {
-  //   if (req.query?.id) {
-  //     res.json(await Product.findOne({_id:req.query.id}));
-  //   } else {
-  //     res.json(await Product.find());
-  //   }
-  // }
+export async function PUT(req: Request) {
+  await mongooseConnect();
+  const {title, description, price, images, category, properties, _id} = await req.json();
+  await Product.updateOne({_id}, {title, description, price, images, category, properties});
+  return NextResponse.json(true);
+}
 
-  // if (method === 'POST') {
-  //   const {title,description,price,images,category,properties} = req.body;
-  //   const productDoc = await Product.create({
-  //     title,description,price,images,category,properties,
-  //   })
-  //   return NextResponse.json(productDoc)
-  // }
-
-  // if (method === 'PUT') {
-  //   const {title,description,price,images,category,properties,_id} = req.body;
-  //   await Product.updateOne({_id}, {title,description,price,images,category,properties});
-  //   res.json(true);
-  // }
-
-  // if (method === 'DELETE') {
-  //   if (req.query?.id) {
-  //     await Product.deleteOne({_id:req.query?.id});
-  //     res.json(true);
-  //   }
-  // }
-// }
-
+export async function DELETE(req: Request, route: { query: { id: string }}) {
+  await mongooseConnect();
+  const res = await req.json()
+  const {searchParams} = new URL(req.url);
+  const _id = searchParams.get("id");
+  if (_id) {
+    await Product.deleteOne({_id});
+    res.json(true);
+  }
+}
 

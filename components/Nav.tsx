@@ -1,5 +1,5 @@
 import Link from "next/link";
-import {useRouter, usePathname} from "next/navigation";
+import {useRouter, usePathname } from "next/navigation";
 import {signOut} from "next-auth/react";
 import Logo from "./Logo";
 
