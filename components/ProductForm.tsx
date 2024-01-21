@@ -108,6 +108,7 @@ export default function ProductForm({
   if (categories.length > 0 && category) {
     let catInfo = categories.find(({ _id }) => _id === category);
     if (catInfo) {
+      console.log("catInfo.properties", catInfo.properties)
       propertiesToFill.push(...catInfo.properties);
       while (catInfo?.parent?._id) {
         const parentCat = categories.find(
@@ -169,17 +170,17 @@ export default function ProductForm({
           className="flex flex-wrap gap-1"
           setList={updateImagesOrder}
         >
-          
+           {!!images?.length &&
+            images.map((link) => (
+              <div
+                key={link}
+                className="h-24 bg-white p-4 shadow-sm rounded-sm border border-gray-200"
+              >
+                <img src={link} alt="" className="rounded-lg" />
+              </div>
+            ))}
         </ReactSortable> */}
-        {!!images?.length &&
-          images.map((link) => (
-            <div
-              key={link}
-              className="h-24 bg-white p-4 shadow-sm rounded-sm border border-gray-200"
-            >
-              <img src={link} alt="" className="rounded-lg" />
-            </div>
-          ))}
+       
         {isUploading && (
           <div className="h-24 flex items-center">
             <Spinner />
