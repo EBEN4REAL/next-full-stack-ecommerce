@@ -16,7 +16,7 @@ interface OrderDocument extends Document {
 }
 
 const OrderSchema = new Schema<OrderDocument>({
-  line_items: Object as unknown as OrderItem, // Adjust the type based on your actual structure
+  line_items: Object as unknown as OrderItem, 
   name: String,
   email: String,
   city: String,

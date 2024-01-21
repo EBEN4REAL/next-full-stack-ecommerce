@@ -5,8 +5,8 @@ interface ProductDocument extends Document {
   description?: string;
   price?: string;
   images?: string[];
-  category?: mongoose.Types.ObjectId | string; // Adjust type as needed
-  properties?: Record<string, any>; // Adjust the type based on your requirements
+  category?: mongoose.Types.ObjectId | string; 
+  properties?: Record<string, any>; 
 }
 
 const ProductSchema = new Schema<ProductDocument>({
