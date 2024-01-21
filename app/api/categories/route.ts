@@ -39,7 +39,8 @@ export async function PUT(req: Request) {
 
 export async function DELETE(req: Request) {
   await mongooseConnect();
-  const {_id} = await req.json();
+  const {searchParams} = new URL(req.url);
+  const _id = searchParams.get("id");
   await Category.deleteOne({_id});
   return NextResponse.json('ok');
 }

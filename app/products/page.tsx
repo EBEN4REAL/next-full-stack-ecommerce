@@ -4,9 +4,11 @@ import Layout from "../../components/Layout";
 import Link from "next/link";
 import {useEffect, useState} from "react";
 import axios from "axios";
+import { ProductInfo } from "../types/Productinfo";
 
 export default function Products() {
-  const [products,setProducts] = useState([]);
+  const [products,setProducts] = useState<ProductInfo[]>([]);
+  
   useEffect(() => {
     axios.get('/api/products').then(response => {
       setProducts(response.data);

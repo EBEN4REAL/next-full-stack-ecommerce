@@ -1,9 +1,10 @@
+
 export  interface ProductInfo {
     _id: string;
     title: string;
     description: string;
-    price: number;
+    price: string;
     images: string[];
     category: string;
-    properties: [];
+    properties: Record<string, string>;
 }
