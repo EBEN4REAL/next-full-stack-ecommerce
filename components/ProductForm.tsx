@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import Spinner from "./Spinner";
-import { ReactSortable, ItemInterface } from "react-sortablejs-typescript";
+import {useProducts} from "@/hooks/useProducts"
+import { HttpMethod, fetchData } from "@/Services/api";
+import {config} from "@/config"
 
 interface Category {
   _id: string;
@@ -43,11 +45,22 @@ export default function ProductForm({
   const [isUploading, setIsUploading] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
   const router = useRouter();
+  
 
   useEffect(() => {
-    axios.get<Category[]>("/api/categories").then((result) => {
-      setCategories(result.data);
-    });
+    const fetchCategories = async () => {
+      const options = {
+          method: "GET"
+      }
+      try {
+        const category = await fetchData<Category[]>(`${config.BASE_URL}/categories`, HttpMethod.GET);
+        setCategories(category);
+      } catch (error) {
+        throw error
+      }
+  };
+
+  fetchCategories()
   }, []);
 
   async function saveProduct(ev: React.FormEvent) {
@@ -61,11 +74,19 @@ export default function ProductForm({
       properties: productProperties,
     };
     if (_id) {
-      // update
-      await axios.put("/api/products", { ...data, _id });
+      const options = {
+          method: "PUT", 
+          body: JSON.stringify({ ...data, _id })
+      }
+      try {
+        const category = await fetchData<Category[]>(`${config.BASE_URL}/categories`, HttpMethod.GET);
+        setCategories(category);
+      } catch (error) {
+        throw error
+      }
+      // await axios.put("/api/products", { ...data, _id });
     } else {
-      // create
-      await axios.post("/api/products", data);
+      // await axios.post("/api/products", data);
     }
     setGoToProducts(true);
   }

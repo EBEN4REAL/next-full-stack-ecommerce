@@ -2,18 +2,11 @@
 
 import Layout from "../../components/Layout";
 import Link from "next/link";
-import {useEffect, useState} from "react";
-import axios from "axios";
-import { ProductInfo } from "../types/Productinfo";
+import { useProducts } from "@/hooks/useProducts";
+import Loader from "@/components/Loader/Loader"
 
 export default function Products() {
-  const [products,setProducts] = useState<ProductInfo[]>([]);
-  
-  useEffect(() => {
-    axios.get('/api/products').then(response => {
-      setProducts(response.data);
-    });
-  }, []);
+  const {products, loading} = useProducts()
   
   return (
     <Layout>
@@ -28,7 +21,8 @@ export default function Products() {
           </tr>
         </thead>
         <tbody>
-          {products.map(product => (
+          {loading && <Loader />}
+          {!loading && products.map(product => (
             <tr key={product._id}>
               <td>{product.title}</td>
               <td>{product.description}</td>

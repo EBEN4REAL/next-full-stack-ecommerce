@@ -2,11 +2,12 @@
 "use client"
 
 import Layout from "@/components/Layout";
-import { useRouter, useParams  } from "next/navigation";
+import { useParams  } from "next/navigation";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import ProductForm from "@/components/ProductForm";
 import {ProductInfo} from "@/app/types/Productinfo"
+import {HttpMethod, fetchData} from "@/Services/api"
+import {config} from "@/config"
 
 export default function EditProductPage() {
   const [productInfo, setProductInfo] = useState<ProductInfo | null>(null);
@@ -16,9 +17,16 @@ export default function EditProductPage() {
     if (!params.id) {
       return;
     }
-    axios.get<ProductInfo>(`/api/products?id=${params.id}`).then(response => {
-      setProductInfo(response.data);
-    });
+    const fetchProduct = async () => {
+      try {
+        const product = await fetchData<ProductInfo>(`${config.BASE_URL}/products?id=${params.id}`, HttpMethod.GET);
+        setProductInfo(product);
+      } catch (error) {
+        throw error
+      }
+  };
+
+  fetchProduct()
   }, [params.id]);
 
   return (
