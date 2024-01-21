@@ -1,13 +1,13 @@
 "use client"
 
 import Layout from "@/components/Layout";
-import { SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import swal, {SweetAlertOptions} from 'sweetalert2';
 
 interface Property {
   name: string;
-  values: string[] | string;
+  values:  string;
 }
 
 interface Category {
@@ -42,7 +42,7 @@ function Categories() {
       parentCategory,
       properties: properties.map(p => ({
         name: p.name,
-        values: p.values,
+        values: p.values.split(",")
       })),
     };
 
