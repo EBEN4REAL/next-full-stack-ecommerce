@@ -77,14 +77,17 @@ export default function ProductForm({
   async function uploadImages(ev: React.ChangeEvent<HTMLInputElement>) {
     const files = ev.target?.files;
     if (files && files?.length > 0) {
-      setIsUploading(true);
+      // setIsUploading(true);
       const data = new FormData();
       for (const file of files) {
         data.append("file", file);
       }
-      const res = await axios.post("/api/upload", data);
-      setImages((oldImages) => [...oldImages, ...res.data.links]);
-      setIsUploading(false);
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: data
+      });
+      // setImages((oldImages) => [...oldImages, ...res.data.links]);
+      // setIsUploading(false);
     }
   }
 
