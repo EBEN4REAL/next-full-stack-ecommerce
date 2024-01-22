@@ -8,10 +8,10 @@ const loadingSkeleton = () => {
           {Array(3).fill(undefined).map((_, index) => (
             <tr key={index}>
                <td className="loading" data-testid="loading-bar">
-                  <div className="bar"></div>
+                  <span className="bar"></span>
                 </td>
                 <td className="loading"  data-testid="loading-bar">
-                  <div className="bar"></div>
+                  <span className="bar"></span>
                 </td>
             </tr>
           ))}

@@ -28,10 +28,10 @@ export async function GET(req: Request, res: Response) {
 
 export async function PUT(req: Request) {
   await mongooseConnect();
-  const {name,parentCategory,properties,_id} = await req.json();
+  const {name,parent,properties,_id} = await req.json();
   const categoryDoc = await Category.updateOne({_id},{
     name,
-    parent: parentCategory || undefined,
+    parent: parent || undefined,
     properties,
   });
  return NextResponse.json(categoryDoc);
@@ -42,5 +42,5 @@ export async function DELETE(req: Request) {
   const {searchParams} = new URL(req.url);
   const _id = searchParams.get("id");
   await Category.deleteOne({_id});
-  return NextResponse.json('ok');
+  return NextResponse.json(true);
 }

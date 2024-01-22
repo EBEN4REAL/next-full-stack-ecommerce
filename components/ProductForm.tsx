@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import axios from "axios";
 import Spinner from "./Spinner";
 import {useProducts} from "@/hooks/useProducts"
 import { HttpMethod, fetchData } from "@/Services/api";
 import {config} from "@/config"
+import { ProductInfo } from "@/app/types/Productinfo";
+import { useCategories } from "@/hooks/useCategories";
+import { Property } from "@/app/types/Category";
 
 interface Category {
   _id: string;
@@ -43,26 +45,10 @@ export default function ProductForm({
   const [images, setImages] = useState(existingImages || []);
   const [goToProducts, setGoToProducts] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
-  const [categories, setCategories] = useState<Category[]>([]);
   const router = useRouter();
-  
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      const options = {
-          method: "GET"
-      }
-      try {
-        const category = await fetchData<Category[]>(`${config.BASE_URL}/categories`, HttpMethod.GET);
-        setCategories(category);
-      } catch (error) {
-        throw error
-      }
-  };
-
-  fetchCategories()
-  }, []);
-
+  const {products, loading, updateProduct} = useProducts()
+  const {categories, loading: categoriesLoading} = useCategories()
+ 
   async function saveProduct(ev: React.FormEvent) {
     ev.preventDefault();
     const data = {
@@ -73,20 +59,12 @@ export default function ProductForm({
       category,
       properties: productProperties,
     };
-    if (_id) {
-      const options = {
-          method: "PUT", 
-          body: JSON.stringify({ ...data, _id })
-      }
-      try {
-        const category = await fetchData<Category[]>(`${config.BASE_URL}/categories`, HttpMethod.GET);
-        setCategories(category);
-      } catch (error) {
-        throw error
-      }
-      // await axios.put("/api/products", { ...data, _id });
-    } else {
-      // await axios.post("/api/products", data);
+    try {
+      const payload = _id ? { ...data, _id } : undefined
+      await updateProduct(payload)
+      // await fetchData<ProductInfo[]>(`${config.BASE_URL}/products`, HttpMethod.PUT, payload);
+    }catch (error) {
+      throw error
     }
     setGoToProducts(true);
   }
@@ -98,7 +76,7 @@ export default function ProductForm({
   async function uploadImages(ev: React.ChangeEvent<HTMLInputElement>) {
     const files = ev.target?.files;
     if (files && files?.length > 0) {
-      // setIsUploading(true);
+      setIsUploading(true);
       const data = new FormData();
       for (const file of files) {
         data.append("file", file);
@@ -107,7 +85,7 @@ export default function ProductForm({
         method: "POST",
         body: data
       });
-      // setImages((oldImages) => [...oldImages, ...res.data.links]);
+      // setImages((oldImages) => [...oldImages, ...res.links]);
       // setIsUploading(false);
     }
   }
@@ -129,21 +107,20 @@ export default function ProductForm({
   if (categories.length > 0 && category) {
     let catInfo = categories.find(({ _id }) => _id === category);
     if (catInfo) {
-      console.log("catInfo.properties", catInfo.properties)
-      propertiesToFill.push(...catInfo.properties);
+      propertiesToFill.push(...catInfo.properties as unknown as { name: string; values: string[]; }[]);
       while (catInfo?.parent?._id) {
         const parentCat = categories.find(
           ({ _id }) => _id === catInfo?.parent?._id
         );
         if(parentCat) {
-          propertiesToFill.push(...parentCat.properties);
+          propertiesToFill.push(...parentCat.properties as unknown as { name: string; values: string[]; }[]);
           catInfo = parentCat;
         }
         
       }
     }
   }
-  console.log("productProperties", productProperties)
+
   return (
     <form onSubmit={saveProduct}>
       <label>Product name</label>

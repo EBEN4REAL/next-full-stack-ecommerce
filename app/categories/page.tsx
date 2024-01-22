@@ -4,60 +4,42 @@ import Layout from "@/components/Layout";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import swal, {SweetAlertOptions} from 'sweetalert2';
-
-interface Property {
-  name: string;
-  values:  string;
-}
-
-interface Category {
-  _id: string;
-  name: string;
-  parent?: { _id: string; name: string };
-  properties: Property[];
-}
+import { HttpMethod, fetchData } from "@/Services/api";
+import {config} from "@/config"
+import { Category, Property } from "../types/Category";
+import { useCategories } from "@/hooks/useCategories";
 
 function Categories() {
   const [editedCategory, setEditedCategory] = useState<Category | null>(null);
   const [name, setName] = useState<string>('');
   const [parentCategory, setParentCategory] = useState<string>('');
-  const [categories, setCategories] = useState<Category[]>([]);
   const [properties, setProperties] = useState<Property[]>([]);
-
-  useEffect(() => {
-    fetchCategories();
-  }, []);
-
-  function fetchCategories() {
-    axios.get('/api/categories').then(result => {
-      setCategories(result.data);
-    });
-  }
+  const {categories, loading, updateCategory, deleteCategory: removeCategory, createCategory} = useCategories()
 
   async function saveCategory(ev: React.FormEvent) {
+    console.log("properties", properties)
     ev.preventDefault();
     const data = {
       _id: "",
       name,
-      parentCategory,
+      parent: parentCategory,
       properties: properties.map(p => ({
         name: p.name,
-        values: p.values.split(",")
+        values: !Array.isArray(p.values) ? p.values.split(",") : p.values
       })),
     };
 
     if (editedCategory) {
       data._id = editedCategory._id;
-      await axios.put('/api/categories', data);
+      await updateCategory(data as unknown as Category)
       setEditedCategory(null);
     } else {
-      await axios.post('/api/categories', data);
+      await createCategory(data as unknown as Category)
     }
 
     setName('');
     setParentCategory('');
     setProperties([]);
-    fetchCategories();
   }
 
   function editCategory(category: Category) {
@@ -83,8 +65,7 @@ function Categories() {
     } as SweetAlertOptions).then(async (result: { isConfirmed: boolean; }) => {
       if (result.isConfirmed) {
         const { _id } = category;
-        await axios.delete(`/api/categories?id=${_id}`);
-        fetchCategories();
+        removeCategory(_id)
       }
     });
   }

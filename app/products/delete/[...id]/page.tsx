@@ -5,27 +5,37 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { ProductInfo } from "@/app/types/Productinfo";
 import {useRouter,  useParams } from "next/navigation";
+import { useProducts } from "@/hooks/useProducts";
 
 export default function DeleteProductPage() {
   const router = useRouter();
-  const [productInfo, setProductInfo] = useState<ProductInfo | undefined>();
+  const [productInfo, setProductInfo] = useState<ProductInfo | null>(null);
   const {id} = useParams<{ id: string }>()
+  const {fetchProduct, deleteProduct: removeProduct} = useProducts()
 
   useEffect(() => {
     if (!id) {
       return;
     }
-    axios.get<ProductInfo>(`/api/products?id=${id}`).then(response => {
-      setProductInfo(response.data);
-    });
+    getProduct()
   }, [id]);
+
+  const getProduct = async () => {
+    try {
+
+      const product = await fetchProduct(id)
+      setProductInfo(product || null);
+    } catch (error) {
+      throw error
+    } 
+  };
 
   function goBack() {
     router.push('/products');
   }
 
   async function deleteProduct() {
-    await axios.delete(`/api/products?id=${id}`);
+    await removeProduct(id)
     goBack();
   }
 
