@@ -21,11 +21,12 @@
   position: relative;
 }
 
-.loading .bar {
+.bar {
   background-color: #E7E7E7;
   height: 14px;
   border-radius: 7px;
   width: 80%;
+  margin: 15px;
 }
 
 .loading:after {

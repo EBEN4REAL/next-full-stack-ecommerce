@@ -62,7 +62,6 @@ export default function ProductForm({
     try {
       const payload = _id ? { ...data, _id } : undefined
       await updateProduct(payload)
-      // await fetchData<ProductInfo[]>(`${config.BASE_URL}/products`, HttpMethod.PUT, payload);
     }catch (error) {
       throw error
     }

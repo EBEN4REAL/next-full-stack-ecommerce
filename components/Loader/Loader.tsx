@@ -7,11 +7,9 @@ const loadingSkeleton = () => {
         <tbody>
           {Array(3).fill(undefined).map((_, index) => (
             <tr key={index}>
-               <td className="loading" data-testid="loading-bar">
-                  <span className="bar"></span>
+               <td className="loading bar" data-testid="loading-bar">
                 </td>
-                <td className="loading"  data-testid="loading-bar">
-                  <span className="bar"></span>
+                <td className="loading bar"  data-testid="loading-bar">
                 </td>
             </tr>
           ))}

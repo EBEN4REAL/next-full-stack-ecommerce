@@ -17,7 +17,6 @@ function Categories() {
   const {categories, loading, updateCategory, deleteCategory: removeCategory, createCategory} = useCategories()
 
   async function saveCategory(ev: React.FormEvent) {
-    console.log("properties", properties)
     ev.preventDefault();
     const data = {
       _id: "",
