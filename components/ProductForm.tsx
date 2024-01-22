@@ -7,6 +7,7 @@ import {config} from "@/config"
 import { ProductInfo } from "@/app/types/Productinfo";
 import { useCategories } from "@/hooks/useCategories";
 import { Property } from "@/app/types/Category";
+import axios from "axios";
 
 interface Category {
   _id: string;
@@ -74,8 +75,15 @@ export default function ProductForm({
 
   async function uploadImages(ev: React.ChangeEvent<HTMLInputElement>) {
     const files = ev.target?.files;
+    // console.log("files", files)
+    // const formData = new FormData();
+    // for (const file of Array.from(files ?? [])) {
+    //   formData.append(file.name, file);
+    // }
+
+    // await axios.post("/api/upload", formData);
     if (files && files?.length > 0) {
-      setIsUploading(true);
+      // setIsUploading(true);
       const data = new FormData();
       for (const file of files) {
         data.append("file", file);

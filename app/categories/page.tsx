@@ -106,7 +106,7 @@ function Categories() {
           : 'Create new category'}
       </label>
       <form onSubmit={saveCategory}>
-        <div className="flex gap-1">
+        <section className="flex gap-1">
           <input
             type="text"
             placeholder={'Category name'}
@@ -125,8 +125,8 @@ function Categories() {
                 </option>
               ))}
           </select>
-        </div>
-        <div className="mb-2">
+        </section>
+        <section className="mb-2">
           <label className="block">Properties</label>
           <button
             onClick={addProperty}
@@ -169,8 +169,8 @@ function Categories() {
                 </button>
               </div>
             ))}
-        </div>
-        <div className="flex gap-1">
+        </section>
+        <section className="flex gap-1">
           {editedCategory && (
             <button
               type="button"
@@ -188,7 +188,7 @@ function Categories() {
           <button type="submit" className="btn-primary py-1">
             Save
           </button>
-        </div>
+        </section>
       </form>
       {!editedCategory && (
         <table className="basic mt-4">

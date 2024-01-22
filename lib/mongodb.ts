@@ -1,9 +1,15 @@
 
-import { MongoClient, MongoClientOptions } from 'mongodb';
+import { MongoClient, MongoClientOptions, GridFSBucket } from 'mongodb';
 
 if (!process.env.MONGODB_URI) {
   throw new Error('Invalid/Missing environment variable: "MONGODB_URI"');
 }
+
+declare global {
+  var client: MongoClient | null;
+  var bucket: GridFSBucket | null;
+}
+
 
 const uri: string = process.env.MONGODB_URI;
 const options: MongoClientOptions = {};
@@ -22,4 +28,5 @@ if (process.env.NODE_ENV === 'development') {
   clientPromise = client.connect();
 }
 
-export default clientPromise;
+
+export  {clientPromise, client};

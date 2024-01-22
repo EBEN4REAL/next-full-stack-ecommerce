@@ -7,8 +7,11 @@ import {isAdminRequest} from "@/app/api/auth/[...nextauth]/route";
 import { NextApiResponse, NextApiRequest } from 'next';
 import { NextResponse } from 'next/server';
 import { IncomingMessage } from 'http';
+import {client} from "@/lib/mongodb"
+import {fileExists} from "@/utils/fileExists"
+import { Readable } from "stream";
+import { GridFSBucket } from 'mongodb';
 const bucketName = 'dawid-next-ecommerce';
-
 
 
 export async function POST(req: Request, res: Response) {
@@ -16,21 +19,41 @@ export async function POST(req: Request, res: Response) {
   await isAdminRequest(req,res);
 
   const form = new multiparty.Form();
-  
-    const incomingMessage = req as unknown as IncomingMessage;
+
+  try {
     const { fields, files } = await new Promise<{ fields: any; files: any }>((resolve, reject) => {
-      form.parse(incomingMessage, (err, fields, files) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve({ fields, files });
-        }
-      });
+      // form.parse(req, (err, fields, files) => {
+      //   if (err) {
+      //     reject(err);
+      //   } else {
+      //     resolve({ fields, files });
+      //   }
+      // });
     });
 
     // Do something with fields and files
     console.log('Fields:', fields);
     console.log('Files:', files);
+
+  } catch (error) {
+    console.error('Error parsing form data:', error);
+  }
+
+
+
+  // const form = new multiparty.Form();
+  
+  // const incomingMessage = req as unknown as IncomingMessage;
+  // const { fields, files } = await new Promise<{ fields: any; files: any }>((resolve, reject) => {
+  //   form.parse(incomingMessage, (err, fields, files) => {
+  //     if (err) {
+  //       reject(err);
+  //     } else {
+  //       resolve({ fields, files });
+  //     }
+  //   });
+  // });
+
 
   // const client = new S3Client({
   //   region: 'us-east-1',
@@ -53,12 +76,12 @@ export async function POST(req: Request, res: Response) {
   //   const link = `https://${bucketName}.s3.amazonaws.com/${newFilename}`;
   //   links.push(link);
   // }
-  return NextResponse.json({file: files.file});
+  // return NextResponse.json({file: files.file});
 }
 
-export const config = {
-  api: {bodyParser: false},
-};
+
+
+
 
 
 

@@ -44,7 +44,7 @@ export default function DeleteProductPage() {
       <h1 className="text-center">Do you really want to delete
         &nbsp;&quot;{productInfo?.title}&quot;?
       </h1>
-      <div className="flex gap-2 justify-center">
+      <section className="flex gap-2 justify-center">
         <button
           onClick={deleteProduct}
           className="btn-red">Yes</button>
@@ -53,7 +53,7 @@ export default function DeleteProductPage() {
           onClick={goBack}>
           NO
         </button>
-      </div>
+      </section>
     </Layout>
   );
 }
