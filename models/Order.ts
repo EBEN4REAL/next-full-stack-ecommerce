@@ -1,7 +1,12 @@
 import { model, models, Schema, Document } from 'mongoose';
 
 interface OrderItem {
-  // Define your properties for line_items
+  quantity: number;
+  price_data: {
+    currency: string
+    product_data: string;
+    unit_amount: number;
+  },
 }
 
 interface OrderDocument extends Document {
