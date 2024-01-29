@@ -6,6 +6,8 @@ import axios from "axios";
 import Spinner from "@/components/Spinner";
 import { prettyDate } from "@/lib/date";
 import swal, { SweetAlertOptions } from 'sweetalert2';
+import { HttpMethod, fetchData } from "@/Services/api";
+import { config } from "@/config";
 
 interface AdminEmail {
   _id: string;
@@ -18,25 +20,28 @@ function AdminsPage() {
   const [adminEmails, setAdminEmails] = useState<AdminEmail[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  function addAdmin(ev: React.FormEvent<HTMLFormElement>): void {
+  async function addAdmin(ev: React.FormEvent<HTMLFormElement>) {
     ev.preventDefault();
-    axios.post('/api/admins', { email }).then(res => {
+    try {
+      await fetchData(`${config.BASE_URL}/admins`, HttpMethod.POST, { email });
       swal.fire({
         title: 'Admin created!',
         icon: 'success',
       });
       setEmail('');
       loadAdmins();
-    }).catch(err => {
-      swal.fire({
-        title: 'Error!',
-        text: err.response.data.message,
-        icon: 'error',
-      });
-    });
+    }catch(e) {
+      if(e instanceof Error) {
+        swal.fire({
+          title: 'Error!',
+          text: e.message,
+          icon: 'error',
+        });
+      }
+    }
   }
 
-  function deleteAdmin(_id: string, email: string): void {
+  async function deleteAdmin(_id: string, email: string) {
     swal.fire({
       title: 'Are you sure?',
       text: `Do you want to delete admin ${email}?`,
@@ -47,23 +52,21 @@ function AdminsPage() {
       reverseButtons: true,
     } as SweetAlertOptions).then(async (result) => {
       if (result.isConfirmed) {
-        axios.delete('/api/admins?_id=' + _id).then(() => {
-          swal.fire({
-            title: 'Admin deleted!',
-            icon: 'success',
-          });
-          loadAdmins();
+        await fetchData<boolean>(`${config.BASE_URL}/admins?_id=${_id}`, HttpMethod.DELETE);
+        swal.fire({
+          title: 'Admin deleted!',
+          icon: 'success',
         });
+        loadAdmins();
       }
     });
   }
 
-  function loadAdmins(): void {
+  async function loadAdmins() {
     setIsLoading(true);
-    axios.get('/api/admins').then(res => {
-      setAdminEmails(res.data);
-      setIsLoading(false);
-    });
+    const data = await fetchData<AdminEmail[]>(`${config.BASE_URL}/admins`, HttpMethod.GET);
+    setAdminEmails(data);
+    setIsLoading(false);
   }
 
   useEffect(() => {

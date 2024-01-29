@@ -1,8 +1,7 @@
 "use client"
 
 import Layout from "@/components/Layout";
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useState } from "react";
 import swal, {SweetAlertOptions} from 'sweetalert2';
 import { HttpMethod, fetchData } from "@/Services/api";
 import {config} from "@/config"

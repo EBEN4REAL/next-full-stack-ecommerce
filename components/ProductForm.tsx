@@ -193,7 +193,7 @@ export default function ProductForm({
         
           {isUploading && (
             <div className="h-24 flex items-center">
-              <Spinner />
+              <Spinner fullWidth={false} />
             </div>
           )}
           <label htmlFor="prod=photo" className="w-24 h-24 cursor-pointer text-center flex flex-col items-center justify-center text-sm gap-1 text-primary rounded-sm bg-white shadow-sm border border-primary">

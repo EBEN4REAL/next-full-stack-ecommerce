@@ -15,7 +15,7 @@ export async function serverAction() {
   const session = await getSession()
   const isAdmin = await isAdminEmail(session?.user?.email);
  
-  if (!isAdmin) {
+  if (isAdmin) {
     throw new Error('Unauthorized access: User does not have admin privileges.')
   }
 }
