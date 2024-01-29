@@ -24,20 +24,20 @@ function SettingsPage() {
     await axios.get('/api/products').then(res => {
       setProducts(res.data);
     });
-    // await axios.get('/api/settings?name=featuredProductId').then(res => {
-    //   setFeaturedProductId(res.data.value);
-    // });
-    // await axios.get('/api/settings?name=shippingFee').then(res => {
-    //   setShippingFee(res.data.value);
-    // });
+    await axios.get('/api/settings?name=featuredProductId').then(res => {
+      setFeaturedProductId(res.data.value);
+    });
+    await axios.get('/api/settings?name=shippingFee').then(res => {
+      setShippingFee(res.data.value);
+    });
   }
 
   async function saveSettings() {
     setIsLoading(true);
-    // await axios.put('/api/settings', {
-    //   name: 'featuredProductId',
-    //   value: featuredProductId,
-    // });
+    await axios.put('/api/settings', {
+      name: 'featuredProductId',
+      value: featuredProductId,
+    });
     await axios.put('/api/settings', {
       name: 'shippingFee',
       value: shippingFee,

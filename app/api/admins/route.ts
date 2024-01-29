@@ -9,7 +9,7 @@ export async function POST(req: Request, res: Response) {
 
     const { email } = await req.json();
     if (await Admin.findOne({ email })) {
-        return NextResponse.json({ status: 400, message: "A already exists!" });
+        return NextResponse.json({ status: 400, message: "An admin already exists with this email address!" });
     } else {
         return NextResponse.json(await Admin.create({ email }));
     }

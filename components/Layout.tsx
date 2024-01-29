@@ -11,8 +11,9 @@ export default function Layout({children}: {children: React.ReactNode}) {
   if (!session) {
     return (
       <div className="bg-bgGray w-screen h-screen flex items-center">
-        <div className="text-center w-full">
-          <button onClick={() => signIn('google')} className="bg-white p-2 px-4 rounded-lg">Login with Google</button>
+        <div className="text-center w-full flex justify-center gap-5">
+          <button onClick={() => signIn('google')} className="bg-gray-200 p-2 px-4 rounded-lg">Login with Google</button>
+          <button onClick={() => signIn('github')} className="bg-black text-white p-2 px-4 rounded-lg">Login with GitHub</button>
         </div>
       </div>
     );
